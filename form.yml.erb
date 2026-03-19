@@ -1,0 +1,31 @@
+---
+cluster: "pax"
+
+bc_dynamic_js: true
+
+<%= ERB.new(File.read(File.expand_path('partials/gpu_discovery.erb', __dir__))).result(binding) %>
+
+attributes:
+<%= generate_partition_field.indent(2) %>
+<%= generate_gpu_type_field.indent(2) %>
+<%= generate_num_hours_field.indent(2) %>
+<%= generate_num_cores_field.indent(2) %>
+<%= generate_num_memory_field.indent(2) %>
+
+  bc_vnc_resolution:
+    required: true
+
+  version:
+    label: Software Version
+    widget: select
+    options:
+      - ["4.2.6"]
+
+form:
+  - partition
+  - gpu_type
+  - bc_num_hours
+  - num_cores
+  - num_memory
+  - bc_vnc_resolution
+  - version

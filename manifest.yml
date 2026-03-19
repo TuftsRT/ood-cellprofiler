@@ -1,0 +1,8 @@
+---
+name: CellProfiler GPU
+category: Interactive Apps
+subcategory: Bioinformatics
+role: batch_connect
+description: |
+  This app will launch [CellProfiler](https://cellprofiler.org/) on the
+  [Tufts High Performance Compute (HPC) cluster](https://it.tufts.edu/researchtechnology.tufts.edu).

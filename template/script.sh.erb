@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+ulimit -c 0
+
+module purge
+
+cd "${HOME}"
+
+###########################################################
+# Disable GVFS / Udisks noise
+###########################################################
+export GVFS_DISABLE_FUSE=1
+export GIO_USE_VFS=local
+export UDISKS_IGNORE=1
+
+###########################################################
+# XFCE Setup
+###########################################################
+(
+  eval "$(dbus-launch --sh-syntax)"
+  export DBUS_SESSION_BUS_ADDRESS
+  export XDG_CONFIG_HOME="<%= session.staged_root.join("config") %>"
+  export XDG_DATA_HOME="<%= session.staged_root.join("share") %>"
+  export XDG_CACHE_HOME="$(mktemp -d)"
+
+  xfce4-session &
+  sleep 5
+
+  xfconf-query -c xfdesktop -p /desktop-icons/style -n -t int -s 0
+  xfconf-query -c xfdesktop -p /desktop-icons/file-icons/show-device -n -t bool -s false
+  xfconf-query -c xfdesktop -p /desktop-icons/file-icons/show-removable -n -t bool -s false
+  xfconf-query -c xfdesktop -p /desktop-icons/file-icons/show-trash -n -t bool -s false
+  xfdesktop --reload
+) &
+
+sleep 5
+
+module load cellprofiler/<%= context.version %>
+export LC_ALL="C"
+
+cellprofiler
