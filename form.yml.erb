@@ -1,11 +1,22 @@
 ---
+<%
+@partition_filter = :all
+_partial_path = '/etc/ood/config/apps/dashboard/batch_connect/partials/resource_discovery.erb'
+_resource_result = ERB.new(File.read(_partial_path)).result(binding)
+%>
 cluster: "pax"
 
 bc_dynamic_js: true
 
-<%= ERB.new(File.read(File.expand_path('partials/gpu_discovery.erb', __dir__))).result(binding) %>
-
 attributes:
+  ta_qos:
+    widget: check_box
+    label: "Request priority start"
+    cacheable: false
+    help: "Limited to 1 running job at a time. (--qos=interactive)"
+    value: "normal"
+    checked_value: "interactive"
+    unchecked_value: "normal"
 <%= generate_partition_field.indent(2) %>
 <%= generate_gpu_type_field.indent(2) %>
 <%= generate_num_hours_field.indent(2) %>
@@ -29,3 +40,4 @@ form:
   - num_memory
   - bc_vnc_resolution
   - version
+  - ta_qos
